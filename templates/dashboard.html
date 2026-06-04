@@ -664,16 +664,34 @@ function agregarProducto() {
 
         <!-- 🔥 FORMULARIO (SUMAR INVENTARIO) -->
         <form method="POST" action="/registrar_compra">
+
+            <input
+                type="text"
+                name="item"
+                placeholder="Item"
+                required
+            >
+
             <select name="producto">
                 {% for prod in productos %}
-                    <option value="{{ prod.nombre }}">{{ prod.nombre }}</option>
+                    <option value="{{ prod.nombre }}">
+                        {{ prod.nombre }}
+                    </option>
                 {% endfor %}
             </select>
 
             <input type="number" name="cantidad" placeholder="Unidades" value="0">
-            <input type="number" step="0.01" name="peso" placeholder="Kilos" value="0">
 
-            <button type="submit">➕ Agregar Stock</button>
+            <input type="number"
+                step="0.01"
+                name="peso"
+                placeholder="Kilos"
+                value="0">
+
+            <button type="submit">
+                ➕ Agregar Stock
+            </button>
+
         </form>
 
         <hr>

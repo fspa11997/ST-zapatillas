@@ -683,11 +683,19 @@ def registrar_compra_route():
 
     empresa_id = session["empresa_id"]
 
+    item = request.form["item"]
     producto = request.form["producto"]
+
     cantidad = int(request.form.get("cantidad") or 0)
     peso = float(request.form.get("peso") or 0)
 
-    registrar_compra(producto, cantidad, peso, empresa_id)
+    registrar_compra(
+        item,
+        producto,
+        cantidad,
+        peso,
+        empresa_id
+    )
 
     return redirect("/dashboard")
 

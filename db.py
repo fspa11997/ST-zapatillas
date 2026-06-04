@@ -169,6 +169,7 @@ def inicializar_db():
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS inventario (
             id SERIAL PRIMARY KEY,
+            item TEXT,
             producto TEXT,
             stock_unidades INTEGER DEFAULT 0,
             stock_kilos DOUBLE PRECISION DEFAULT 0,
@@ -1005,30 +1006,55 @@ def obtener_detalles_factura(factura_id):
     return detalles
 
 
-def registrar_compra(producto, cantidad, peso, empresa_id):
+def registrar_compra(item, producto, cantidad, peso, empresa_id):
+
     conn = conectar()
     cursor = conn.cursor()
 
     cursor.execute("""
-        SELECT id FROM inventario
-        WHERE producto = %s AND empresa_id = %s
+        SELECT id
+        FROM inventario
+        WHERE producto = %s
+        AND empresa_id = %s
     """, (producto, empresa_id))
 
     existe = cursor.fetchone()
 
     if existe:
+
         cursor.execute("""
             UPDATE inventario
             SET stock_unidades = stock_unidades + %s,
-                stock_kilos = stock_kilos + %s
-            WHERE producto = %s AND empresa_id = %s
-        """, (cantidad, peso, producto, empresa_id))
+                stock_kilos = stock_kilos + %s,
+                item = %s
+            WHERE producto = %s
+            AND empresa_id = %s
+        """, (
+            cantidad,
+            peso,
+            item,
+            producto,
+            empresa_id
+        ))
 
     else:
+
         cursor.execute("""
-            INSERT INTO inventario (producto, stock_unidades, stock_kilos, empresa_id)
-            VALUES (%s, %s, %s, %s)
-        """, (producto, cantidad, peso, empresa_id))
+            INSERT INTO inventario (
+                item,
+                producto,
+                stock_unidades,
+                stock_kilos,
+                empresa_id
+            )
+            VALUES (%s, %s, %s, %s, %s)
+        """, (
+            item,
+            producto,
+            cantidad,
+            peso,
+            empresa_id
+        ))
 
     conn.commit()
     conn.close()
@@ -1039,9 +1065,14 @@ def obtener_inventario(empresa_id):
     cursor = conn.cursor()
 
     cursor.execute("""
-        SELECT producto, stock_unidades, stock_kilos
+        SELECT
+            item,
+            producto,
+            stock_unidades,
+            stock_kilos
         FROM inventario
         WHERE empresa_id = %s
+        ORDER BY item, producto
     """, (empresa_id,))
 
     data = cursor.fetchall()

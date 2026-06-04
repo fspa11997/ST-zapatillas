@@ -1,6 +1,6 @@
 import bcrypt
 
-password = ""
+password = "super1234*"
 
 hash_password = bcrypt.hashpw(
     password.encode("utf-8"),
