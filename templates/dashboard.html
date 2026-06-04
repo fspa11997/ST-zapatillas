@@ -709,10 +709,11 @@ function agregarProducto() {
 
             <tr>
 
+                <td>{{ item.item }}</td>
+
                 <td>
                     {{ item.producto }}
 
-                    <!-- 🔥 ALERTA POR PRODUCTO -->
                     {% if item.stock_unidades <= 5 %}
                         <span class="alerta-roja">⚠ CRÍTICO</span>
                     {% elif item.stock_unidades <= 10 %}
@@ -721,6 +722,7 @@ function agregarProducto() {
                 </td>
 
                 <td>{{ item.stock_unidades }}</td>
+
                 <td>{{ "%.2f"|format(item.stock_kilos or 0) }}</td>
 
             </tr>
