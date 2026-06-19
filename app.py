@@ -1375,6 +1375,7 @@ def pedidos():
         pedidos=pedidos,
         filtro=filtro
     )
+
 @app.route("/productos")
 def productos():
 
@@ -1403,6 +1404,7 @@ def inventario():
         "inventario.html",
         inventario=inventario
     )
+
 
 @app.route("/cartera")
 def cartera():
